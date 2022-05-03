@@ -1,7 +1,7 @@
-import firebase from "firebase/compat"
-import {connectAuthEmulator, getAuth} from 'firebase/auth'
+import firebase from 'firebase/compat';
+import { connectAuthEmulator, getAuth } from 'firebase/auth';
 
-const env = import.meta.env
+const env = import.meta.env;
 
 const firebaseApp = firebase.initializeApp({
     apiKey: env.VITE_API_KEY,
@@ -10,8 +10,8 @@ const firebaseApp = firebase.initializeApp({
     storageBucket: env.VITE_STORAGE_BUCKET,
     messagingSenderId: env.VITE_MESSAGING_SENDER_ID,
     appId: env.VITE_APP_ID,
-    measurementId: env.VITE_MEASUREMENT_ID
-})
+    measurementId: env.VITE_MEASUREMENT_ID,
+});
 
-export const auth = getAuth(firebaseApp)
-connectAuthEmulator(auth, "http://localhost:9099")
+export const auth = getAuth(firebaseApp);
+connectAuthEmulator(auth, 'http://localhost:9099');
