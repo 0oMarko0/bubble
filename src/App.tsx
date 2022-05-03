@@ -1,6 +1,7 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { SignInPage, SignUpPage } from './Auth';
 import { Home } from './Home';
+import React from 'react';
 
 export const App = () => {
     return (
