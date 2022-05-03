@@ -1,5 +1,5 @@
 import firebase from "firebase/compat"
-import {connectAuthEmulator, getAuth, signInWithEmailAndPassword} from 'firebase/auth'
+import {connectAuthEmulator, getAuth} from 'firebase/auth'
 
 const env = import.meta.env
 
@@ -14,6 +14,4 @@ const firebaseApp = firebase.initializeApp({
 })
 
 export const auth = getAuth(firebaseApp)
-
 connectAuthEmulator(auth, "http://localhost:9099")
-export const SignInWithEmailAndPassword = (email: string, password: string) => signInWithEmailAndPassword(auth, email, password)
