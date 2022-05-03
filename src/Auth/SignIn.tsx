@@ -76,8 +76,7 @@ export const SignIn: React.FC = () => {
                         color="white"
                         _hover={{ bg: 'gray.500' }}
                         variant={'outline'}
-                        onClick={() => navigate('/signup')}
-                    >
+                        onClick={() => navigate('/signup')}>
                         Create account
                     </Button>
                 </HStack>

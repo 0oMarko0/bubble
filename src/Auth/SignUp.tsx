@@ -60,8 +60,7 @@ export const SignUp: React.FC = () => {
                         color="white"
                         _hover={{ bg: 'gray.500' }}
                         variant={'outline'}
-                        onClick={() => navigate('/signin')}
-                    >
+                        onClick={() => navigate('/signin')}>
                         Sign in
                     </Button>
                 </HStack>
