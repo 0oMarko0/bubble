@@ -23,12 +23,7 @@ export const Home = () => {
               align={'center'}
               justify={'center'}
               bg={useColorModeValue('gray.50', 'gray.800')}>
-            <Button onClick={() => onSignOut()}>Sign out</Button>
+            <Button onClick={async () => signOut(auth)}>Sign out</Button>
         </Flex>
     )
 }
-
-const onSignOut = async () => {
-    await signOut(auth)
-}
-
