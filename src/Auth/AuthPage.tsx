@@ -1,13 +1,13 @@
+import React from 'react';
 import { Box, Flex, Heading, Stack, Text, useColorModeValue } from '@chakra-ui/react';
 import { SignIn } from './SignIn';
 import { SignUp } from './SignUp';
-import React from 'react';
 
-type AuthProps = {
+interface AuthProps {
     title: string;
     message: string;
     children: JSX.Element;
-};
+}
 
 const AuthPage: React.FC<AuthProps> = ({ title, message, children }) => {
     return (
@@ -33,7 +33,7 @@ export const SignInPage = () => (
     </AuthPage>
 );
 export const SignUpPage = () => (
-    <AuthPage title={'Welcome to bubble'} message={'Create your account 🚀'}>
+    <AuthPage title={'Welcome to bubble'} message={'But first, create your account 🚀'}>
         <SignUp />
     </AuthPage>
 );

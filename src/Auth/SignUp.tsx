@@ -1,9 +1,8 @@
-import { Button, FormControl, FormErrorMessage, FormLabel, HStack, Input, Stack, useToast } from '@chakra-ui/react';
+import { Button, FormControl, FormErrorMessage, FormLabel, HStack, Input, Stack } from '@chakra-ui/react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import React from 'react';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { auth } from '../firebase';
+import { useAuth } from './AuthProvider';
 
 type SignUpForm = {
     email: string;
@@ -16,19 +15,12 @@ export const SignUp: React.FC = () => {
         handleSubmit,
         formState: { errors, touchedFields },
     } = useForm<SignUpForm>();
+
+    const auth = useAuth();
     const navigate = useNavigate();
-    const toast = useToast();
 
     const onSubmit = async (form: SignUpForm) => {
-        await createUserWithEmailAndPassword(auth, form.email, form.password);
-        navigate('/home');
-        toast({
-            title: 'User created',
-            status: 'success',
-            duration: 3000,
-            isClosable: true,
-            position: 'top-right',
-        });
+        auth.signup(form.email, form.password);
     };
 
     return (

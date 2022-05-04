@@ -1,5 +1,6 @@
 import firebase from 'firebase/compat';
 import { connectAuthEmulator, getAuth } from 'firebase/auth';
+import FirebaseError = firebase.FirebaseError;
 
 const env = import.meta.env;
 
@@ -13,5 +14,6 @@ const firebaseApp = firebase.initializeApp({
     measurementId: env.VITE_MEASUREMENT_ID,
 });
 
+export const errorDescription = (error: FirebaseError) => error.code.split('/')[1];
 export const auth = getAuth(firebaseApp);
 connectAuthEmulator(auth, 'http://localhost:9099');

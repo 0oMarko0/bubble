@@ -8,7 +8,7 @@ module.exports = {
         'plugin:@typescript-eslint/recommended',
         'prettier',
     ],
-    plugins: ['@typescript-eslint', 'prettier'],
+    plugins: ['@typescript-eslint', 'prettier', 'unused-imports'],
     parserOptions: {
         ecmaVersion: 'latest',
         sourceType: 'module',
@@ -18,6 +18,23 @@ module.exports = {
         project: './tsconfig.json',
     },
     rules: {
+        'no-unused-vars': 'off',
+        'unused-imports/no-unused-imports': 'error',
+        'unused-imports/no-unused-vars': [
+            'warn',
+            {
+                vars: 'all',
+                varsIgnorePattern: '^_',
+                args: 'after-used',
+                argsIgnorePattern: '^_',
+            },
+        ],
+        'sort-imports': [
+            'error',
+            {
+                ignoreDeclarationSort: true,
+            },
+        ],
         'prettier/prettier': 'error',
     },
     settings: {

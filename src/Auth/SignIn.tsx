@@ -1,19 +1,8 @@
-import {
-    Button,
-    FormControl,
-    FormErrorMessage,
-    FormLabel,
-    HStack,
-    Input,
-    Link,
-    Stack,
-    useToast,
-} from '@chakra-ui/react';
+import React from 'react';
+import { Button, FormControl, FormErrorMessage, FormLabel, HStack, Input, Link, Stack } from '@chakra-ui/react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
-import React from 'react';
-import { signInWithEmailAndPassword } from 'firebase/auth';
-import { auth } from '../firebase';
+import { useAuth } from './AuthProvider';
 
 type SignInForm = {
     email: string;
@@ -26,23 +15,12 @@ export const SignIn: React.FC = () => {
         handleSubmit,
         formState: { errors, touchedFields },
     } = useForm<SignInForm>();
+
     const navigate = useNavigate();
-    const toast = useToast();
+    const auth = useAuth();
+
     const onSubmit = (form: SignInForm) => {
-        signInWithEmailAndPassword(auth, form.email, form.password)
-            .then(() => {
-                navigate('/home');
-            })
-            .catch((e) => {
-                toast({
-                    title: 'Unable to sign in',
-                    description: `${e.code.split('/')[1]}`,
-                    status: 'error',
-                    duration: 3000,
-                    isClosable: true,
-                    position: 'top-right',
-                });
-            });
+        auth.signin(form.email, form.password);
     };
 
     return (
