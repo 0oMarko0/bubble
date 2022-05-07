@@ -8,7 +8,7 @@ export const AuthenticatedRoute = ({ children }: { children: JSX.Element }) => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (!auth.user) {
+        if (!auth.isSignin()) {
             return navigate('/signin', { state: { from: location }, replace: true });
         }
     });

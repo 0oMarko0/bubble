@@ -1,9 +1,10 @@
+import { MoonIcon, SunIcon } from '@chakra-ui/icons';
 import {
     Box,
     Button,
     Center,
     Flex,
-    Link,
+    Heading,
     Menu,
     MenuButton,
     MenuDivider,
@@ -12,65 +13,55 @@ import {
     Stack,
     useColorMode,
     useColorModeValue,
-    useDisclosure,
 } from '@chakra-ui/react';
 import Avatar from 'boring-avatars';
 import React from 'react';
-
-const NavLink = ({ children }: { children: React.ReactNode }) => (
-    <Link
-        px={2}
-        py={1}
-        rounded={'md'}
-        _hover={{
-            textDecoration: 'none',
-            bg: useColorModeValue('gray.200', 'gray.700'),
-        }}
-        href={'#'}>
-        {children}
-    </Link>
-);
+import { useAuth } from '../Auth';
 
 export default function Nav() {
     const { colorMode, toggleColorMode } = useColorMode();
-    const { isOpen, onOpen, onClose } = useDisclosure();
+    const { user, signout } = useAuth();
+
+    const avatarColors = ['#92A1C6', '#146A7C', '#F0AB3D', '#C271B4', '#C20D90'];
+
     return (
         <>
             <Box bg={useColorModeValue('gray.100', 'gray.900')} px={4}>
                 <Flex h={16} alignItems={'center'} justifyContent={'space-between'}>
-                    <Box>Logo</Box>
+                    <Box>
+                        <Heading as="h4" size="md">
+                            Bubble
+                        </Heading>
+                    </Box>
 
                     <Flex alignItems={'center'}>
                         <Stack direction={'row'} spacing={7}>
-                            <Button onClick={toggleColorMode}>{colorMode === 'light' ? 'hola' : 'blabla'}</Button>
+                            <Button onClick={toggleColorMode}>
+                                {colorMode === 'light' ? <MoonIcon /> : <SunIcon />}
+                            </Button>
 
                             <Menu>
                                 <MenuButton as={Button} rounded={'full'} variant={'link'} cursor={'pointer'} minW={0}>
-                                    <Avatar
-                                        size={40}
-                                        name="Jane Cunningham"
-                                        variant="beam"
-                                        colors={['#92A1C6', '#146A7C', '#F0AB3D', '#C271B4', '#C20D90']}
-                                    />
+                                    <Avatar size={40} name={user?.avatar} variant="beam" colors={avatarColors} />
                                 </MenuButton>
                                 <MenuList alignItems={'center'}>
                                     <br />
                                     <Center>
                                         <Avatar
                                             size={80}
-                                            name="Jane Cunningham"
+                                            name={user?.avatar}
                                             variant="beam"
                                             square={true}
-                                            colors={['#92A1C6', '#146A7C', '#F0AB3D', '#C271B4', '#C20D90']}
+                                            colors={avatarColors}
                                         />
                                     </Center>
                                     <br />
                                     <Center>
-                                        <p>Username</p>
+                                        <p>{user?.email.split('@')[0]}</p>
                                     </Center>
                                     <br />
                                     <MenuDivider />
-                                    <MenuItem>Logout</MenuItem>
+                                    <MenuItem onClick={() => signout()}>Sign out</MenuItem>
                                 </MenuList>
                             </Menu>
                         </Stack>

@@ -1,17 +1,15 @@
 import React from 'react';
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from 'firebase/auth';
-import { auth, errorDescription } from '../firebase';
+import { auth, db, errorDescription } from '../firebase';
 import { useNavigate } from 'react-router-dom';
 import { useToast } from '@chakra-ui/react';
-
-// got get the User from the firestore db with the user id (email)
-interface UserContext {
-    email: string;
-    avatar: string;
-}
+import { doc, getDoc, setDoc } from 'firebase/firestore';
+import { User } from '../Models';
+import { randomAvatar } from '../Common/avatar';
 
 interface AuthContextType {
-    user: any;
+    user: User | null;
+    isSignin: () => boolean;
     signin: (email: string, password: string) => void;
     signup: (email: string, password: string) => void;
     signout: () => void;
@@ -23,6 +21,7 @@ interface AuthProviderProps {
 
 const AuthContext = React.createContext<AuthContextType>({
     user: null,
+    isSignin: () => false,
     signin: () => null,
     signup: () => null,
     signout: () => null,
@@ -31,15 +30,26 @@ const AuthContext = React.createContext<AuthContextType>({
 export const useAuth = () => React.useContext(AuthContext);
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
-    const [user, setUser] = React.useState<any>(null);
+    const [user, setUser] = React.useState<User | null>(null);
     const navigate = useNavigate();
     const toast = useToast();
 
+    const isSignin = () => {
+        return user != null;
+    };
+
     const signin = (email: string, password: string) => {
         signInWithEmailAndPassword(auth, email, password)
-            .then((userCredential) => {
-                setUser(userCredential);
-                navigate('/home');
+            .then(async (userCredential) => {
+                const email: string = userCredential.user.email != null ? userCredential.user.email : '';
+                const user = await getDoc(doc(db, 'Users', email));
+
+                if (user.exists()) {
+                    setUser({ email: user.data().email, avatar: user.data().avatar });
+                    navigate('/home');
+                } else {
+                    throw `User ${email} does not exist`;
+                }
             })
             .catch((e) => {
                 setUser(null);
@@ -56,8 +66,13 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
     const signup = (email: string, password: string) => {
         createUserWithEmailAndPassword(auth, email, password)
-            .then((userCredential) => {
-                setUser(userCredential.user);
+            .then(async () => {
+                const avatar = randomAvatar();
+                await setDoc(doc(db, 'Users', email), {
+                    email: email,
+                    avatar: avatar,
+                });
+                setUser({ email, avatar });
                 navigate('/home');
             })
             .catch((e) => {
@@ -80,6 +95,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         });
     };
 
-    const value = { user, signin, signup, signout };
+    const value = { user, signin, signup, signout, isSignin };
     return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
