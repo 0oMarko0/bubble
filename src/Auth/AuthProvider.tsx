@@ -4,6 +4,12 @@ import { auth, errorDescription } from '../firebase';
 import { useNavigate } from 'react-router-dom';
 import { useToast } from '@chakra-ui/react';
 
+// got get the User from the firestore db with the user id (email)
+interface UserContext {
+    email: string;
+    avatar: string;
+}
+
 interface AuthContextType {
     user: any;
     signin: (email: string, password: string) => void;

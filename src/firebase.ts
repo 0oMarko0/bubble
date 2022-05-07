@@ -1,5 +1,7 @@
 import firebase from 'firebase/compat';
 import { connectAuthEmulator, getAuth } from 'firebase/auth';
+import { connectFirestoreEmulator, getFirestore } from 'firebase/firestore';
+
 import FirebaseError = firebase.FirebaseError;
 
 const env = import.meta.env;
@@ -16,4 +18,6 @@ const firebaseApp = firebase.initializeApp({
 
 export const errorDescription = (error: FirebaseError) => error.code.split('/')[1];
 export const auth = getAuth(firebaseApp);
+export const db = getFirestore(firebaseApp);
 connectAuthEmulator(auth, 'http://localhost:9099');
+connectFirestoreEmulator(db, 'localhost', 8080);

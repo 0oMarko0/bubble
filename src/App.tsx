@@ -3,7 +3,6 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { SignInPage, SignUpPage } from './Auth';
 import { Home } from './Home';
 import { AuthProvider } from './Auth';
-import { AuthenticatedRoute } from './Auth';
 
 export const App = () => {
     return (
@@ -17,9 +16,9 @@ export const App = () => {
                         <Route
                             path="/home"
                             element={
-                                <AuthenticatedRoute>
-                                    <Home />
-                                </AuthenticatedRoute>
+                                // <AuthenticatedRoute>
+                                <Home />
+                                // </AuthenticatedRoute>
                             }
                         />
                     </Routes>

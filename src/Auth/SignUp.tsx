@@ -3,6 +3,9 @@ import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import React from 'react';
 import { useAuth } from './AuthProvider';
+import { doc, setDoc } from 'firebase/firestore';
+import { db } from '../firebase';
+import { randomAvatar } from '../Common/avatar';
 
 type SignUpForm = {
     email: string;
@@ -20,6 +23,10 @@ export const SignUp: React.FC = () => {
     const navigate = useNavigate();
 
     const onSubmit = async (form: SignUpForm) => {
+        await setDoc(doc(db, 'Users', form.email), {
+            email: form.email,
+            avatar: randomAvatar(),
+        });
         auth.signup(form.email, form.password);
     };
 
