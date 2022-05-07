@@ -1,11 +1,11 @@
 import React from 'react';
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from 'firebase/auth';
-import { auth, db, errorDescription } from '../firebase';
+import { auth, db, errorDescription } from '../Common';
 import { useNavigate } from 'react-router-dom';
 import { useToast } from '@chakra-ui/react';
 import { doc, getDoc, setDoc } from 'firebase/firestore';
 import { User } from '../Models';
-import { randomAvatar } from '../Common/avatar';
+import { randomAvatar } from '../Common';
 
 interface AuthContextType {
     user: User | null;
